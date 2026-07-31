@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Storyroot Photography Website</title>
+<meta name="description" content="Storyroot Photography — family, newborn, senior, missionary, mini and wedding sessions. Now booking clients across Arizona, with select travel dates to Utah. View pricing and reserve your session." />
+
+<!-- ==========================================================================
+     STORYROOT PHOTOGRAPHY — Investment / Sessions page
+     Lives at: www.storyrootphotography.com  (site root — index.html)
+
+     LOGOS (do not replace — these are the official marks, kept in this folder):
+       - storyroot_photography.png            (full wordmark)
+       - storyroot_fingerprint_ig_f7f4ee.svg  (fingerprint mark)
+     Keep those two files in the SAME folder as this HTML when you upload it.
+
+     PHOTOS: every grey block marked  data-photo  is a placeholder sized to the
+     right shape. Drop a real image in by replacing the <div class="ph"> ... </div>
+     with:  <img src="your-photo.jpg" alt="..." />
+
+     BOOKING EMAIL: search this file for  photo@storyrootmemoryco.com
+     and swap in the address you want inquiries to land in.
+========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --brown:#4a3119;        /* wordmark brown  */
+    --brown-soft:#6b4e33;
+    --olive:#7c853e;        /* fingerprint / PHOTOGRAPHY green */
+    --olive-deep:#5f6730;
+    --cream:#f7f4ee;        /* brand background cream */
+    --sand:#efe9df;
+    --sand-deep:#e6ddcd;
+    --ink:#3a2c1c;
+    --line:#d9cfbd;
+    --shadow:0 18px 50px -28px rgba(74,49,25,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Jost',system-ui,sans-serif;
+    font-weight:300;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{font-family:'Spectral',Georgia,serif;font-weight:400;margin:0;color:var(--brown);}
+  a{color:inherit;}
+  img{display:block;max-width:100%;}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 26px;}
+
+  /* ---------- top nav ---------- */
+  header.nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(247,244,238,.9);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    padding:14px 26px;max-width:1120px;margin:0 auto;position:relative;
+  }
+  .nav-logo{flex:0 0 auto;display:flex;align-items:center;}
+  .nav-logo img{height:60px;width:auto;display:block;}
+  /* nav links live in a tap-to-open dropdown on EVERY screen size */
+  .nav-links{
+    position:absolute;top:calc(100% + 6px);right:26px;z-index:60;min-width:250px;
+    display:flex;flex-direction:column;align-items:stretch;gap:0;
+    background:var(--cream);border:1px solid var(--line);border-radius:6px;
+    box-shadow:0 22px 42px -20px rgba(74,49,25,.55);
+    max-height:0;overflow:hidden;opacity:0;pointer-events:none;
+    transition:max-height .3s ease,opacity .22s ease;
+  }
+  .nav-links.open{max-height:480px;opacity:1;pointer-events:auto;padding:6px 0;}
+  .nav-links a{
+    text-decoration:none;text-transform:uppercase;letter-spacing:.16em;
+    font-size:12.5px;color:var(--brown-soft);padding:14px 24px;border-bottom:1px solid var(--line);
+  }
+  .nav-links a:last-child{border-bottom:0;}
+  .nav-links a:hover{color:var(--olive-deep);}
+  .nav-links a.nav-cta{
+    margin:12px 20px 6px;text-align:center;font-size:12px;font-weight:500;
+    background:var(--brown);color:#fff;padding:14px;border-radius:2px;border-bottom:0;
+  }
+  .nav-links a.nav-cta:hover{background:var(--olive-deep);color:#fff;}
+  /* hamburger button — shown on EVERY screen size */
+  .menu-btn{display:flex;background:none;border:0;cursor:pointer;padding:0;
+    width:44px;height:44px;align-items:center;justify-content:center;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{
+    display:block;width:24px;height:2px;background:var(--brown);border-radius:2px;transition:.25s ease;}
+  .menu-btn span{position:relative;}
+  .menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;}
+  .menu-btn span::before{top:-7px;}
+  .menu-btn span::after{top:7px;}
+  .menu-btn.open span{background:transparent;}
+  .menu-btn.open span::before{top:0;transform:rotate(45deg);}
+  .menu-btn.open span::after{top:0;transform:rotate(-45deg);}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;min-height:74vh;}
+  .hero-copy{display:flex;flex-direction:column;justify-content:center;padding:70px 6vw 70px 0;}
+  .hero-eyebrow{text-transform:uppercase;letter-spacing:.34em;font-size:12px;color:var(--olive-deep);margin-bottom:22px;}
+  .hero h1{font-size:clamp(38px,5vw,66px);line-height:1.05;letter-spacing:.01em;}
+  .hero h1 em{font-style:italic;color:var(--olive-deep);}
+  .hero p.lede{font-size:18px;max-width:46ch;margin:26px 0 34px;color:var(--brown-soft);}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;}
+  .hero-photo{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--sand),var(--sand-deep));}
+  .hero-photo > img{width:100%;height:100%;object-fit:cover;object-position:38% 40%;}
+  .btn{
+    display:inline-block;text-decoration:none;text-transform:uppercase;
+    letter-spacing:.16em;font-size:12px;padding:15px 30px;border-radius:2px;transition:.2s;
+  }
+  .btn-solid{background:var(--brown);color:var(--cream);}
+  .btn-solid:hover{background:var(--olive-deep);}
+  .btn-ghost{border:1px solid var(--brown);color:var(--brown);}
+  .btn-ghost:hover{background:var(--brown);color:var(--cream);}
+
+  /* photo placeholders */
+  .ph{
+    position:relative;width:100%;height:100%;min-height:220px;
+    background:
+      repeating-linear-gradient(45deg,rgba(124,133,62,.05) 0 14px,transparent 14px 28px),
+      linear-gradient(135deg,var(--sand) 0%,var(--sand-deep) 100%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--brown-soft);text-align:center;gap:10px;
+  }
+  .ph .ph-fp{width:52px;opacity:.5;}
+  .ph .ph-fp-lg{width:110px;opacity:1;}
+  .ph[data-photo="wedding"]{background:var(--cream);}
+  .ph small{text-transform:uppercase;letter-spacing:.2em;font-size:10px;opacity:.7;}
+
+  /* ---------- section shells ---------- */
+  section{padding:78px 0;scroll-margin-top:96px;}
+  .section-head{text-align:center;max-width:720px;margin:0 auto 52px;}
+  .kicker{text-transform:uppercase;letter-spacing:.32em;font-size:12px;color:var(--olive-deep);margin-bottom:16px;}
+  .section-head h2{font-size:clamp(30px,3.8vw,46px);}
+  .section-head p{color:var(--brown-soft);margin-top:16px;font-size:17px;}
+  .rule{width:54px;height:1px;background:var(--olive);margin:20px auto 0;}
+
+  /* ---------- intro band ---------- */
+  .intro{background:var(--sand);}
+  .intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .intro-photo{aspect-ratio:7/8;border-radius:3px;overflow:hidden;box-shadow:var(--shadow);}
+  .intro h2{font-size:clamp(28px,3.6vw,42px);margin-bottom:18px;}
+  .intro p{color:var(--brown-soft);margin:0 0 16px;}
+  .intro .fp-word{color:var(--olive-deep);font-style:italic;}
+
+  /* ---------- sessions ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:var(--shadow);
+  }
+  .card .card-photo{aspect-ratio:4/5;overflow:hidden;}
+  .card .card-photo > img{width:100%;height:100%;object-fit:cover;object-position:center 30%;}
+  .card-body{padding:26px 24px 28px;display:flex;flex-direction:column;flex:1;}
+  .card h3{font-size:26px;}
+  .card .price{font-family:'Spectral',serif;font-size:20px;color:var(--olive-deep);margin:6px 0 16px;}
+  .card .price span{font-size:13px;color:var(--brown-soft);font-family:'Jost',sans-serif;letter-spacing:.06em;}
+  .card ul{list-style:none;padding:0;margin:0 0 22px;}
+  .card ul li{padding:7px 0;border-bottom:1px dashed var(--line);font-size:14.5px;color:var(--ink);}
+  .card ul li:last-child{border-bottom:0;}
+  .card .card-cta{margin-top:auto;}
+  .card .card-cta a{
+    display:block;text-align:center;text-decoration:none;text-transform:uppercase;
+    letter-spacing:.16em;font-size:11.5px;padding:13px;border:1px solid var(--brown);
+    color:var(--brown);border-radius:2px;transition:.2s;
+  }
+  .card .card-cta a:hover{background:var(--brown);color:var(--cream);}
+  .tag{
+    align-self:flex-start;background:var(--sand);color:var(--olive-deep);
+    text-transform:uppercase;letter-spacing:.18em;font-size:10px;padding:5px 10px;
+    border-radius:2px;margin-bottom:14px;
+  }
+
+  /* ---------- travel / utah ---------- */
+  .travel{background:var(--brown);color:var(--cream);}
+  .travel h2{color:var(--cream);}
+  .travel .kicker{color:#c9c39c;}
+  .travel-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+  .travel p{color:#e9e1d1;font-size:17px;}
+  .travel .travel-photo{aspect-ratio:3/2;border-radius:3px;overflow:hidden;}
+  .travel .ph{background:
+      repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 14px,transparent 14px 28px),
+      linear-gradient(135deg,#5c4227,#4a3119);color:#d9cdb8;}
+  .travel .ph .ph-fp{opacity:.4;}
+
+  /* ---------- how it works / terms ---------- */
+  .terms-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:10px;}
+  .step{background:var(--sand);border-radius:4px;padding:26px 22px;}
+  .step .num{font-family:'Spectral',serif;font-size:34px;color:var(--olive);line-height:1;}
+  .step h4{font-size:18px;margin:12px 0 8px;}
+  .step p{margin:0;font-size:14.5px;color:var(--brown-soft);}
+  .fineprint{max-width:820px;margin:40px auto 0;text-align:center;color:var(--brown-soft);font-size:14px;}
+
+  /* ---------- booking / contact ---------- */
+  .book{background:var(--sand);}
+  .book-card{
+    background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);
+    max-width:760px;margin:0 auto;padding:52px 44px;text-align:center;
+  }
+  .book-card h2{font-size:clamp(28px,3.6vw,42px);}
+  .book-card p{color:var(--brown-soft);margin:16px auto 30px;max-width:52ch;}
+  .book-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .book-mini{margin-top:26px;font-size:13px;color:var(--brown-soft);letter-spacing:.04em;}
+  form.inquiry{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:34px;text-align:left;}
+  form.inquiry label{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--brown-soft);display:block;margin-bottom:6px;}
+  form.inquiry .full{grid-column:1 / -1;}
+  form.inquiry input,form.inquiry select,form.inquiry textarea{
+    width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:3px;
+    background:var(--cream);font-family:'Jost',sans-serif;font-size:15px;color:var(--ink);
+  }
+  form.inquiry textarea{min-height:110px;resize:vertical;}
+  form.inquiry .full button{
+    width:100%;border:0;cursor:pointer;background:var(--brown);color:var(--cream);
+    text-transform:uppercase;letter-spacing:.16em;font-size:12px;padding:16px;border-radius:2px;
+  }
+  form.inquiry .full button:hover{background:var(--olive-deep);}
+
+  /* ---------- parent company ---------- */
+  .parent{background:var(--cream);border-top:1px solid var(--line);}
+  .parent .section-head{margin-bottom:44px;}
+  .parent-logo{display:flex;justify-content:center;margin-bottom:22px;}
+  .parent-logo img{width:70px;height:auto;opacity:.95;}
+  .parent-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:8px;}
+  .ptile{
+    background:#fff;border:1px solid var(--line);border-radius:5px;padding:32px 26px;
+    text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;
+  }
+  .ptile .ptile-mark{width:40px;height:40px;margin-bottom:16px;opacity:.9;}
+  .ptile h3{font-size:22px;margin-bottom:10px;}
+  .ptile p{color:var(--brown-soft);font-size:14.5px;margin:0;line-height:1.65;}
+  .parent-cta{text-align:center;margin-top:44px;}
+  .parent-note{text-align:center;color:var(--brown-soft);font-size:12px;margin-top:20px;font-style:italic;opacity:.8;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--cream);border-top:1px solid var(--line);padding:56px 0 40px;}
+  .foot-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+  .foot-logo img{height:56px;}
+  .foot-tag{font-family:'Spectral',serif;font-style:italic;font-size:20px;color:var(--brown);}
+  .foot-tag sup{font-style:normal;font-size:.5em;letter-spacing:.04em;vertical-align:super;}
+  .foot-links{display:flex;gap:24px;flex-wrap:wrap;}
+  .foot-links a{text-decoration:none;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:var(--brown-soft);}
+  .foot-links a:hover{color:var(--olive-deep);}
+  .foot-legal{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);text-align:center;color:var(--brown-soft);font-size:12px;line-height:1.8;}
+  .foot-legal .tm{font-weight:500;color:var(--brown);}
+
+  /* TM helper */
+  .tm-sup{font-size:.42em;vertical-align:super;letter-spacing:.02em;}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;min-height:auto;}
+    .hero-copy{padding:54px 0;}
+    .hero-photo{min-height:320px;}
+    .intro-grid,.travel-grid{grid-template-columns:1fr;gap:30px;}
+    .cards{grid-template-columns:1fr 1fr;}
+    .terms-grid{grid-template-columns:1fr 1fr;}
+    .parent-tiles{grid-template-columns:1fr;}
+  }
+
+  /* small screens: shrink logo + let the menu span the width */
+  @media(max-width:640px){
+    .nav-logo img{height:50px;}
+    .nav-links{left:16px;right:16px;min-width:0;}
+  }
+
+  /* phone: photo-first hero, tighter rhythm */
+  @media(max-width:760px){
+    section{padding:52px 0;}
+    .section-head{margin-bottom:32px;}
+    .intro,.travel,.book,.parent{padding-top:52px;padding-bottom:52px;}
+    .hero-copy{order:2;padding:28px 0 6px;}
+    .hero-photo{order:1;min-height:auto;aspect-ratio:4/5;border-radius:3px;}
+    .hero h1{font-size:clamp(32px,9vw,52px);}
+    .hero p.lede{margin:18px 0 26px;font-size:16.5px;}
+    .hero-eyebrow{margin-bottom:16px;}
+  }
+
+  @media(max-width:600px){
+    .cards{grid-template-columns:1fr;}
+    .terms-grid{grid-template-columns:1fr;}
+    form.inquiry{grid-template-columns:1fr;}
+    .book-card{padding:38px 22px;}
+    .hero-actions{flex-direction:column;}
+    .hero-actions .btn{width:100%;text-align:center;}
+    .book-actions{flex-direction:column;}
+    .book-actions .btn{width:100%;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAV ================= -->
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top" aria-label="Storyroot Photography home">
+      <img src="storyroot_photography.png" alt="Storyroot Photography" />
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#sessions">Sessions</a>
+      <a href="#about">About</a>
+      <a href="#travel">Utah &amp; Travel</a>
+      <a href="#how">How It Works</a>
+      <a class="nav-cta" href="#book">Book Now</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ================= HERO ================= -->
+<section class="hero" style="padding-bottom:0;padding-top:0;">
+  <div class="wrap" style="padding:0 26px;">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-eyebrow">Storyroot Photography&trade; &nbsp;·&nbsp; Now Booking</div>
+        <h1>Every&nbsp;Finger&nbsp;Print<br/>Tells&nbsp;a&nbsp;<em>Story</em><span class="tm-sup">&trade;</span></h1>
+        <p class="lede">Warm, honest, timeless photography for the people and milestones you never want to forget. Family, newborn, senior, missionary and wedding sessions — booking now across Arizona, with select travel dates to Utah.</p>
+        <div class="hero-actions">
+          <a class="btn btn-solid" href="#sessions">View Investment</a>
+          <a class="btn btn-ghost" href="#book" data-book>Book Your Session</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="signature-image.jpg" alt="Storyroot Photography signature portrait" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT / INTRO ================= -->
+<section class="intro" id="about">
+  <div class="wrap">
+    <div class="intro-grid">
+      <div class="intro-photo">
+        <img src="portrait-of-the-photographer.jpg" alt="The Storyroot Photography family" style="width:100%;height:100%;object-fit:cover;object-position:48% 50%;" />
+      </div>
+      <div>
+        <div class="kicker">Welcome to Storyroot</div>
+        <h2>Rooted in your story</h2>
+        <p>Every family has a beginning, a middle, and a hundred small moments in between — and every one of them is worth keeping. At Storyroot Photography, we believe your pictures should feel like <span class="fp-word">you</span>: unhurried, genuine, and full of the little details that make your people <em>your</em> people.</p>
+        <p>We photograph families, newborns, seniors, missionaries, and weddings with a relaxed, guided approach, so you can actually enjoy the session while we quietly do our thing. The result is a gallery you'll want to print, frame, and pass down.</p>
+        <p>Based in Arizona and booking clients now — with a handful of travel dates each season for our friends and family in Utah.</p>
+        <a class="btn btn-ghost" href="#sessions" style="margin-top:8px;">See Session Options</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SESSIONS / INVESTMENT ================= -->
+<section id="sessions">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The Investment</div>
+      <h2>Sessions &amp; Pricing</h2>
+      <p>Straightforward pricing, publicly listed and available to book by anyone. A non‑refundable $100 retainer reserves your date; the remaining balance is due the day of your shoot.</p>
+      <div class="rule"></div>
+    </div>
+
+    <div class="cards">
+
+      <!-- MINI -->
+      <div class="card">
+        <div class="card-photo"><img src="mini-sessions.jpg" alt="Mini session" style="width:100%;height:100%;object-fit:cover;"/></div>
+        <div class="card-body">
+          <span class="tag">Seasonal · Limited Dates</span>
+          <h3>Mini Sessions</h3>
+          <div class="price">$250 <span>· 20 minutes</span></div>
+          <ul>
+            <li>20‑minute session</li>
+            <li>25+ edited digital images</li>
+            <li>Set dates &amp; curated locations</li>
+            <li>Full payment reserves your slot</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Check Availability</a></div>
+        </div>
+      </div>
+
+      <!-- FAMILY -->
+      <div class="card">
+        <div class="card-photo"><img src="family-sessions.jpg" alt="Family session" style="width:100%;height:100%;object-fit:cover;"/></div>
+        <div class="card-body">
+          <span class="tag">Most Popular</span>
+          <h3>Family Sessions</h3>
+          <div class="price">$385 <span>· 45 minutes</span></div>
+          <ul>
+            <li>45‑minute session</li>
+            <li>60+ edited digital images</li>
+            <li>Location of your choice</li>
+            <li>$100 retainer reserves your date</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Check Availability</a></div>
+        </div>
+      </div>
+
+      <!-- NEWBORN -->
+      <div class="card">
+        <div class="card-photo"><img src="newborn-sessions.jpg" alt="Newborn session" style="width:100%;height:100%;object-fit:cover;"/></div>
+        <div class="card-body">
+          <span class="tag">In‑Home Comfort</span>
+          <h3>Newborn Sessions</h3>
+          <div class="price">$395 <span>· 1–1.5 hours</span></div>
+          <ul>
+            <li>60+ edited digital images</li>
+            <li>In‑home (studio available for a fee)</li>
+            <li>1–4 outfit changes</li>
+            <li>Newborn &amp; style guide included</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Check Availability</a></div>
+        </div>
+      </div>
+
+      <!-- SENIOR -->
+      <div class="card">
+        <div class="card-photo"><img src="senior-session.jpg" alt="Senior session" style="width:100%;height:100%;object-fit:cover;"/></div>
+        <div class="card-body">
+          <span class="tag">Class Of ____</span>
+          <h3>Senior Sessions</h3>
+          <div class="price">$340 <span>· 1 hour</span></div>
+          <ul>
+            <li>50+ edited digital images</li>
+            <li>Location of your choice</li>
+            <li>1–4 outfit changes</li>
+            <li>Add time: $50 / extra 30 min</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Check Availability</a></div>
+        </div>
+      </div>
+
+      <!-- MISSIONARY -->
+      <div class="card">
+        <div class="card-photo"><img src="missionary-photos.jpg" alt="Missionary session" style="width:100%;height:100%;object-fit:cover;"/></div>
+        <div class="card-body">
+          <span class="tag">Farewell &amp; Homecoming</span>
+          <h3>Missionary Photos</h3>
+          <div class="price">$125 <span>· 20 minutes</span></div>
+          <ul>
+            <li>20‑minute session</li>
+            <li>20+ edited digital images</li>
+            <li>Location of your choice</li>
+            <li>Perfect for farewells &amp; homecomings</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Check Availability</a></div>
+        </div>
+      </div>
+
+      <!-- WEDDING -->
+      <div class="card">
+        <div class="card-photo"><div class="ph" data-photo="wedding"><img class="ph-fp ph-fp-lg" src="storyroot_fingerprint_ig_f7f4ee.svg" alt="Storyroot Photography"/></div></div>
+        <div class="card-body">
+          <span class="tag">By Inquiry</span>
+          <h3>Weddings</h3>
+          <div class="price">Custom <span>· let's talk</span></div>
+          <ul>
+            <li>Coverage tailored to your day</li>
+            <li>Elopements &amp; full weddings</li>
+            <li>Custom quote &amp; timeline</li>
+            <li>Arizona &amp; travel dates welcome</li>
+          </ul>
+          <div class="card-cta"><a href="#book" data-book>Start An Inquiry</a></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= UTAH / TRAVEL ================= -->
+<section class="travel" id="travel">
+  <div class="wrap">
+    <div class="travel-grid">
+      <div>
+        <div class="kicker">Now Serving</div>
+        <h2>Arizona based, Utah bound</h2>
+        <p>Storyroot Photography is based in Arizona and books sessions of every kind close to home. A few times each season we also travel north to Utah to visit family — and those trips are open to the public for booking.</p>
+        <p>If you're in Utah and want family, newborn, senior, missionary, or couples photos, reach out and we'll line your session up with an upcoming travel date. Spots on travel weekends are limited and go first‑come, first‑served.</p>
+        <a class="btn btn-solid" href="#book" data-book style="background:var(--cream);color:var(--brown);">Ask About Utah Dates</a>
+      </div>
+      <div class="travel-photo">
+        <svg viewBox="0 0 600 400" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Map showing Storyroot Photography traveling from Arizona to Utah">
+          <defs>
+            <linearGradient id="utahPanel" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#5c4227"/>
+              <stop offset="1" stop-color="#452d18"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="600" height="400" fill="url(#utahPanel)"/>
+          <rect x="7" y="7" width="586" height="386" rx="4" fill="none" stroke="#f7f4ee" stroke-opacity="0.16" stroke-width="1.5"/>
+
+          <!-- Utah state (notch in the top-right corner) -->
+          <g transform="translate(300,60)">
+            <path d="M0,0 L93,0 L93,68 L150,68 L150,192 L0,192 Z"
+                  fill="#7c853e" fill-opacity="0.92" stroke="#f7f4ee" stroke-width="2.5" stroke-linejoin="round"/>
+            <text x="72" y="156" text-anchor="middle" fill="#f7f4ee"
+                  font-family="Spectral, Georgia, serif" font-size="22" letter-spacing="3">UTAH</text>
+          </g>
+
+          <!-- dotted travel path from Arizona up to the Utah pin -->
+          <path d="M150,322 Q206,168 351,150" fill="none" stroke="#f7f4ee" stroke-width="3"
+                stroke-linecap="round" stroke-dasharray="0.1 12" stroke-opacity="0.85"/>
+
+          <!-- Arizona start point -->
+          <circle cx="150" cy="322" r="7" fill="#f7f4ee"/>
+          <text x="150" y="352" text-anchor="middle" fill="#e9e1d1"
+                font-family="Jost, sans-serif" font-size="15" letter-spacing="3">ARIZONA</text>
+
+          <!-- Utah location pin -->
+          <g transform="translate(351,150)">
+            <path d="M0,11 C-15,-9 -15,-26 0,-26 C15,-26 15,-9 0,11 Z"
+                  fill="#f7f4ee" stroke="#452d18" stroke-width="1"/>
+            <circle cx="0" cy="-16" r="7" fill="#7c853e"/>
+          </g>
+
+          <text x="300" y="384" text-anchor="middle" fill="#c9c39c"
+                font-family="Jost, sans-serif" font-size="12.5" letter-spacing="3">SELECT TRAVEL DATES EACH SEASON</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Simple &amp; Clear</div>
+      <h2>How Booking Works</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="terms-grid">
+      <div class="step">
+        <div class="num">1</div>
+        <h4>Choose your session</h4>
+        <p>Pick the session type and location that fits your family. Not sure? Ask us — we'll help you decide.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h4>Reserve your date</h4>
+        <p>A non‑refundable $100 retainer holds your spot. Minis are paid in full at booking.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h4>Let's connect</h4>
+        <p>You'll hear back within 48 business hours to confirm details, location, and answer every question.</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <h4>Session &amp; gallery</h4>
+        <p>Remaining balance is due the day of your shoot. Then relax while we capture it — your edited gallery follows.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BOOK / CONTACT ================= -->
+<section class="book" id="book">
+  <div class="wrap">
+    <div class="book-card">
+      <div class="kicker">Reserve Your Date</div>
+      <h2>Let's tell your story</h2>
+      <p>Storyroot Photography is open and actively booking the public. Send an inquiry below or email us directly, and we'll follow up to confirm your date, retainer, and details.</p>
+      <div class="book-actions">
+        <a class="btn btn-solid" href="mailto:photo@storyrootmemoryco.com?subject=Session%20Inquiry%20—%20Storyroot%20Photography&body=Hi%20Storyroot%2C%0A%0AI%27d%20love%20to%20book%20a%20session.%0A%0ASession%20type%3A%0APreferred%20date(s)%3A%0ALocation%20(AZ%20or%20Utah)%3A%0AName%3A%0APhone%3A%0A%0AThank%20you!">Email to Book</a>
+        <a class="btn btn-ghost" href="#sessions">Review Pricing</a>
+      </div>
+
+      <form class="inquiry" action="https://formsubmit.co/photo@storyrootmemoryco.com" method="POST">
+        <!-- FormSubmit delivers this form straight to photo@storyrootmemoryco.com. -->
+        <input type="hidden" name="_subject" value="New session inquiry — Storyroot Photography" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <!-- After you host the page, point this at your own thank-you/confirmation URL -->
+        <input type="hidden" name="_next" value="https://www.storyrootphotography.com/" />
+        <!-- honeypot: hidden from people, catches spam bots -->
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+        <div>
+          <label for="name">Name</label>
+          <input id="name" name="Name" type="text" required />
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required />
+        </div>
+        <div>
+          <label for="type">Session type</label>
+          <select id="type" name="Session Type">
+            <option>Mini — $250</option>
+            <option>Family — $385</option>
+            <option>Newborn — $395</option>
+            <option>Senior — $340</option>
+            <option>Missionary — $125</option>
+            <option>Wedding — custom</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="loc">Location</label>
+          <select id="loc" name="Location">
+            <option>Arizona</option>
+            <option>Utah (travel date)</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="msg">Tell us about your session</label>
+          <textarea id="msg" name="Message" placeholder="Preferred dates, who's being photographed, anything you'd like us to know..."></textarea>
+        </div>
+        <div class="full">
+          <button type="submit">Send Inquiry</button>
+        </div>
+      </form>
+
+      <div class="book-mini">Prefer email? <a href="mailto:photo@storyrootmemoryco.com" style="color:var(--olive-deep);">photo@storyrootmemoryco.com</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PARENT COMPANY (MOCKUP — edit offerings/links) ================= -->
+<section class="parent" id="memory-co">
+  <div class="wrap">
+    <div class="parent-logo">
+      <img src="storyroot_fingerprint_ig_f7f4ee.svg" alt="Storyroot Memory Co." />
+    </div>
+    <div class="section-head">
+      <div class="kicker">The Storyroot Family</div>
+      <h2>Part of Storyroot Memory Co.</h2>
+      <p>Storyroot Photography is one branch of Storyroot Memory Co.&trade; — a family of services built around a single belief: the moments that make us who we are deserve to be captured, kept, and passed down. Explore the other ways we help you hold onto your story.</p>
+      <div class="rule"></div>
+    </div>
+
+    <div class="parent-tiles">
+      <!-- SAMPLE OFFERING 1 -->
+      <div class="ptile">
+        <img class="ptile-mark" src="storyroot_fingerprint_ig_f7f4ee.svg" alt="" />
+        <h3>Photography</h3>
+        <p>Warm, timeless portrait sessions for families, newborns, seniors, missionaries, and weddings — the branch you're on now.</p>
+      </div>
+      <!-- SAMPLE OFFERING 2 -->
+      <div class="ptile">
+        <img class="ptile-mark" src="storyroot_fingerprint_ig_f7f4ee.svg" alt="" />
+        <h3>Memory Preservation</h3>
+        <p>Preserve the voices, stories, and personalities that photos alone can't capture through filmed interviews, digitization, audio recordings, and legacy projects.</p>
+      </div>
+      <!-- SAMPLE OFFERING 3 -->
+      <div class="ptile">
+        <img class="ptile-mark" src="storyroot_fingerprint_ig_f7f4ee.svg" alt="" />
+        <h3>Heirlooms</h3>
+        <p>Beautiful, handcrafted keepsakes designed to be held, shared, and passed down for generations—from albums and prints to meaningful legacy gifts.</p>
+      </div>
+    </div>
+
+    <div class="parent-cta">
+      <a class="btn btn-solid" href="https://www.storyrootmemoryco.com" target="_blank" rel="noopener">Explore Storyroot Memory Co.</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="foot-logo" href="#top" aria-label="Storyroot Photography">
+        <img src="storyroot_photography.png" alt="Storyroot Photography" />
+      </a>
+      <div class="foot-tag">Every Finger Print Tells a Story<sup>&trade;</sup></div>
+    </div>
+    <div class="foot-legal">
+      &copy; <span id="yr"></span> Storyroot Photography. All rights reserved. &nbsp;“Every Finger Print Tells a Story”&trade; and the Storyroot fingerprint mark are trademarks of Storyroot Photography.
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Email-only for now. When you're ready to connect Pixieset booking,
+     just ask and we'll wire the "Book" buttons to your Pixieset link. */
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  /* Mobile tap-to-open menu */
+  (function () {
+    var btn = document.getElementById("menuBtn");
+    var links = document.getElementById("navLinks");
+    if (!btn || !links) return;
+    function close() { links.classList.remove("open"); btn.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
+    btn.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      btn.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    /* close the menu after tapping a link */
+    links.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", close); });
+    /* close when clicking anywhere outside the menu */
+    document.addEventListener("click", function (e) {
+      if (!links.contains(e.target) && !btn.contains(e.target)) close();
+    });
+  })();
+</script>
+
+</body>
+</html>
