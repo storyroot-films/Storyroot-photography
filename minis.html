@@ -59,7 +59,7 @@
   .hero h1 em{font-style:italic;color:var(--olive-deep);}
   .hero p{font-size:18px;max-width:44ch;margin:22px 0 30px;color:var(--brown-soft);}
   .hero-photo{overflow:hidden;background:var(--sand);}
-  .hero-photo img{width:100%;height:100%;object-fit:cover;}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;}
 
   .facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 30px;padding:0;list-style:none;}
   .facts li{font-size:14px;color:var(--brown);letter-spacing:.04em;}
@@ -140,7 +140,8 @@
 
   @media (max-width:860px){
     .hero{grid-template-columns:1fr;min-height:0;}
-    .hero-photo{height:340px;order:-1;}
+    .hero-photo{height:auto;aspect-ratio:4/5;max-height:78vh;order:-1;}
+    .hero-photo img{object-position:50% 12%;}
     .hero-copy{padding:40px 22px 46px;}
     .info-grid{grid-template-columns:1fr;}
   }
@@ -234,8 +235,8 @@
     </div>
     <div class="info-grid">
       <div class="info"><h3>Gilbert Reservoir</h3><p>Higley &amp; Ocotillo, Gilbert. Fridays, October 23, November 6 and November 20.</p></div>
-      <div class="info"><h3>Veterans Oasis Park</h3><p>Lindsay &amp; Chandler Heights, Chandler. Fridays, October 30 and November 13.</p></div>
-      <div class="info"><h3>Usery Mountain</h3><p>Ellsworth &amp; McDowell, Mesa. Saturdays, November 7 and November 14. Usery is a county park with a per-vehicle entry fee at the gate.</p></div>
+      <div class="info"><h3>Veterans Oasis Park</h3><p>Lindsay &amp; Chandler Heights, Chandler. Fridays, October 30 and November 13, and Saturdays, October 24 and November 21.</p></div>
+      <div class="info"><h3>Usery Mountain</h3><p>Ellsworth &amp; McDowell, Mesa. Saturdays, November 7 and November 14. Per-vehicle entry fee may apply.</p></div>
     </div>
 
     <div class="faq" style="margin-top:56px;">
@@ -262,7 +263,7 @@ var BOOKING_URL = "https://script.google.com/macros/s/AKfycbwzJQo9gExGj8F_AeUdho
 /* Used only in PREVIEW mode, before BOOKING_URL is set. The Google Sheet is the real source. */
 var PREVIEW = [
   ["2026-10-23","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
-  ["2026-10-24","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true],
+  ["2026-10-24","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true],
   ["2026-10-31","Halloween Photoshoots","",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true],
   ["2026-10-30","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
   ["2026-11-06","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
@@ -270,16 +271,16 @@ var PREVIEW = [
   ["2026-11-13","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
   ["2026-11-14","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
   ["2026-11-20","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
-  ["2026-11-21","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true]
+  ["2026-11-21","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true]
 ];
 
 /* A sample photo for each night, taken at that location. Nights without one show a plain card. */
 var NIGHT_PHOTOS = {
-  "2026-10-23": "mini-v2-2026-10-23.jpg", "2026-10-24": "mini-v2-2026-10-24.jpg",
-  "2026-10-30": "mini-v2-2026-10-30.jpg", "2026-10-31": "mini-v2-2026-10-31.jpg", "2026-11-06": "mini-v2-2026-11-06.jpg",
-  "2026-11-07": "mini-v2-2026-11-07.jpg", "2026-11-13": "mini-v2-2026-11-13.jpg",
-  "2026-11-14": "mini-v2-2026-11-14.jpg", "2026-11-20": "mini-v2-2026-11-20.jpg",
-  "2026-11-21": "mini-v2-2026-11-21.jpg"
+  "2026-10-23": "mini-v4-2026-10-23.jpg", "2026-10-24": "mini-v4-2026-10-24.jpg",
+  "2026-10-30": "mini-v4-2026-10-30.jpg", "2026-10-31": "mini-v4-2026-10-31.jpg", "2026-11-06": "mini-v4-2026-11-06.jpg",
+  "2026-11-07": "mini-v4-2026-11-07.jpg", "2026-11-13": "mini-v4-2026-11-13.jpg",
+  "2026-11-14": "mini-v4-2026-11-14.jpg", "2026-11-20": "mini-v4-2026-11-20.jpg",
+  "2026-11-21": "mini-v4-2026-11-21.jpg"
 };
 
 (function () {
@@ -330,7 +331,7 @@ var NIGHT_PHOTOS = {
       var first = list[0];
       var photo = NIGHT_PHOTOS[date];
       return '<div class="night' + (anyOpen ? '' : ' is-full') + '">' +
-        (photo ? '<div class="night-photo"><img src="' + photo + '" alt="' + esc(first.location) + '"/></div>'
+        (photo ? '<div class="night-photo"><img loading="lazy" src="' + photo + '" alt="' + esc(first.location) + '"/></div>'
                : '<div class="night-photo blank">' + esc(first.location) + '</div>') +
         '<div class="night-day">' + dayName(date) + '</div>' +
         '<h3>' + monthDay(date) + '</h3>' +
