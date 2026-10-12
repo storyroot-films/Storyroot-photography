@@ -72,7 +72,12 @@
 
   /* slots */
   .nights{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
-  .night{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;box-shadow:var(--shadow);}
+  .night{background:#fff;border:1px solid var(--line);border-radius:6px;padding:0 0 20px;box-shadow:var(--shadow);overflow:hidden;}
+  .night > *:not(.night-photo){margin-left:22px;margin-right:22px;}
+  .night-photo{aspect-ratio:3/2;background:var(--sand);margin-bottom:18px;overflow:hidden;}
+  .night-photo img{width:100%;height:100%;object-fit:cover;}
+  .night-photo.blank{display:flex;align-items:center;justify-content:center;font-family:'Spectral',serif;font-style:italic;font-size:22px;color:var(--brown-soft);background:linear-gradient(135deg,var(--sand),var(--sand-deep));}
+  .night.is-full .night-photo img{filter:grayscale(.35);}
   .night.is-full{opacity:.7;}
   .night-day{text-transform:uppercase;letter-spacing:.22em;font-size:11px;color:var(--olive-deep);}
   .night h3{font-size:26px;line-height:1.2;margin:4px 0 2px;}
@@ -257,13 +262,25 @@ var BOOKING_URL = "https://script.google.com/macros/s/AKfycbwzJQo9gExGj8F_AeUdho
 /* Used only in PREVIEW mode, before BOOKING_URL is set. The Google Sheet is the real source. */
 var PREVIEW = [
   ["2026-10-23","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
+  ["2026-10-24","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true],
+  ["2026-10-31","Halloween Photoshoots","",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true],
   ["2026-10-30","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
   ["2026-11-06","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
   ["2026-11-07","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
   ["2026-11-13","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
   ["2026-11-14","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
-  ["2026-11-20","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]]
+  ["2026-11-20","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
+  ["2026-11-21","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"],true]
 ];
+
+/* A sample photo for each night, taken at that location. Nights without one show a plain card. */
+var NIGHT_PHOTOS = {
+  "2026-10-23": "minis/2026-10-23.jpg", "2026-10-24": "minis/2026-10-24.jpg",
+  "2026-10-30": "minis/2026-10-30.jpg", "2026-11-06": "minis/2026-11-06.jpg",
+  "2026-11-07": "minis/2026-11-07.jpg", "2026-11-13": "minis/2026-11-13.jpg",
+  "2026-11-14": "minis/2026-11-14.jpg", "2026-11-20": "minis/2026-11-20.jpg",
+  "2026-11-21": "minis/2026-11-21.jpg"
+};
 
 (function () {
   document.getElementById("yr").textContent = new Date().getFullYear();
@@ -290,7 +307,7 @@ var PREVIEW = [
     PREVIEW.forEach(function (n) {
       n[3].forEach(function (t) {
         var id = n[0] + " " + to24(t);
-        out.push({ id:id, date:n[0], time:t, location:n[1], area:n[2], open:!isPast(id) });
+        out.push({ id:id, date:n[0], time:t, location:n[1], area:n[2], open:!n[4] && !isPast(id) });
       });
     });
     return out;
@@ -311,7 +328,10 @@ var PREVIEW = [
       var list = byDate[date].sort(function (a, b) { return a.id < b.id ? -1 : 1; });
       var anyOpen = list.some(function (s) { return s.open; });
       var first = list[0];
+      var photo = NIGHT_PHOTOS[date];
       return '<div class="night' + (anyOpen ? '' : ' is-full') + '">' +
+        (photo ? '<div class="night-photo"><img src="' + photo + '" alt="A Storyroot session at ' + esc(first.location) + '"/></div>'
+               : '<div class="night-photo blank">' + esc(first.location) + '</div>') +
         '<div class="night-day">' + dayName(date) + '</div>' +
         '<h3>' + monthDay(date) + '</h3>' +
         '<div class="night-loc">' + esc(first.location) + (first.area ? '<span>' + esc(first.area) + '</span>' : '') + '</div>' +
