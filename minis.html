@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fall Mini Sessions · Storyroot Photography</title>
+<meta name="description" content="Fall mini sessions with Storyroot Photography. $250 for 20 minutes and 25+ edited images, at Gilbert Reservoir, Veterans Oasis Park and Usery Mountain. Pick your time and reserve it online." />
+
+<!-- ==========================================================================
+     STORYROOT PHOTOGRAPHY — Mini Session booking page
+     Lives at: www.storyrootphotography.com/minis
+
+     Slots come live from the "Mini Sessions" Google Sheet. Paste the Apps Script
+     web app URL into BOOKING_URL below (see booking-system/SETUP.md).
+     Until it's pasted, the page runs in PREVIEW mode: every slot shows as open
+     and nothing is actually booked.
+========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --brown:#4a3119; --brown-soft:#6b4e33;
+    --olive:#7c853e; --olive-deep:#5f6730;
+    --cream:#f7f4ee; --sand:#efe9df; --sand-deep:#e6ddcd;
+    --ink:#3a2c1c; --line:#d9cfbd;
+    --shadow:0 18px 50px -28px rgba(74,49,25,.45);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Jost',system-ui,sans-serif;
+       font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:400;margin:0;color:var(--brown);}
+  a{color:inherit;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px;}
+
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(247,244,238,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;max-width:1120px;margin:0 auto;}
+  .nav-inner img{height:54px;width:auto;}
+  .nav-link{text-decoration:none;text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:var(--brown-soft);}
+  .nav-link:hover{color:var(--olive-deep);}
+
+  .kicker{text-transform:uppercase;letter-spacing:.32em;font-size:12px;color:var(--olive-deep);margin-bottom:14px;}
+  .rule{width:54px;height:1px;background:var(--olive);margin:20px auto 0;}
+  .btn{display:inline-block;text-decoration:none;text-transform:uppercase;letter-spacing:.16em;font-size:12px;
+       padding:15px 30px;border-radius:2px;transition:.2s;border:0;cursor:pointer;font-family:inherit;}
+  .btn-solid{background:var(--brown);color:var(--cream);}
+  .btn-solid:hover{background:var(--olive-deep);}
+  .btn-ghost{background:transparent;border:1px solid var(--brown);color:var(--brown);}
+  .btn-ghost:hover{background:var(--brown);color:var(--cream);}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;min-height:560px;border-bottom:1px solid var(--line);}
+  .hero-copy{display:flex;flex-direction:column;justify-content:center;padding:64px 6vw 64px max(22px,calc((100vw - 1120px)/2 + 22px));}
+  .hero h1{font-size:clamp(38px,5vw,62px);line-height:1.05;}
+  .hero h1 em{font-style:italic;color:var(--olive-deep);}
+  .hero p{font-size:18px;max-width:44ch;margin:22px 0 30px;color:var(--brown-soft);}
+  .hero-photo{overflow:hidden;background:var(--sand);}
+  .hero-photo img{width:100%;height:100%;object-fit:cover;}
+
+  .facts{display:flex;flex-wrap:wrap;gap:10px 28px;margin:0 0 30px;padding:0;list-style:none;}
+  .facts li{font-size:14px;color:var(--brown);letter-spacing:.04em;}
+  .facts li strong{font-family:'Spectral',serif;font-weight:400;font-size:26px;display:block;line-height:1.1;}
+
+  section{padding:72px 0;scroll-margin-top:84px;}
+  .section-head{text-align:center;max-width:680px;margin:0 auto 40px;}
+  .section-head h2{font-size:clamp(30px,3.6vw,44px);}
+  .section-head p{color:var(--brown-soft);margin-top:14px;font-size:17px;}
+
+  /* slots */
+  .nights{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+  .night{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 22px 20px;box-shadow:var(--shadow);}
+  .night.is-full{opacity:.7;}
+  .night-day{text-transform:uppercase;letter-spacing:.22em;font-size:11px;color:var(--olive-deep);}
+  .night h3{font-size:26px;line-height:1.2;margin:4px 0 2px;}
+  .night-loc{font-size:14px;color:var(--brown-soft);margin-bottom:16px;}
+  .night-loc span{display:block;font-size:12.5px;opacity:.85;}
+  .times{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .slot{font-family:inherit;font-size:15px;letter-spacing:.04em;padding:12px 8px;border-radius:3px;cursor:pointer;
+        background:var(--cream);color:var(--brown);border:1px solid var(--line);transition:.15s;}
+  .slot:hover:not(:disabled){border-color:var(--olive);background:#fff;}
+  .slot.selected{background:var(--olive-deep);border-color:var(--olive-deep);color:#fff;}
+  .slot:disabled{cursor:not-allowed;color:#a8998a;background:transparent;border-style:dashed;}
+  .slot:disabled small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.16em;}
+  .full-note{margin-top:12px;font-size:12px;text-transform:uppercase;letter-spacing:.16em;color:var(--brown-soft);}
+  .status-msg{text-align:center;color:var(--brown-soft);padding:30px 0;}
+  .preview-banner{max-width:680px;margin:0 auto 28px;padding:12px 16px;border:1px dashed var(--olive);border-radius:4px;
+                  font-size:13.5px;color:var(--olive-deep);text-align:center;background:#fff;}
+
+  /* form */
+  .reserve{background:var(--sand);}
+  .reserve-card{max-width:720px;margin:0 auto;background:var(--cream);border:1px solid var(--line);border-radius:6px;padding:40px 34px;box-shadow:var(--shadow);}
+  .picked{text-align:center;margin-bottom:26px;}
+  .picked h3{font-size:28px;}
+  .picked p{margin:6px 0 0;color:var(--brown-soft);}
+  .picked .none{font-family:'Spectral',serif;font-style:italic;font-size:20px;color:var(--brown-soft);}
+  form{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  form .full{grid-column:1 / -1;}
+  label{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--brown-soft);display:block;margin-bottom:6px;}
+  input,select,textarea{width:100%;font-family:inherit;font-size:16px;font-weight:300;color:var(--ink);background:#fff;
+                        border:1px solid var(--line);border-radius:3px;padding:12px 14px;}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--olive);}
+  textarea{min-height:96px;resize:vertical;}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  form button{width:100%;}
+  form button:disabled{opacity:.55;cursor:wait;}
+  .fine{font-size:13px;color:var(--brown-soft);text-align:center;margin:4px 0 0;}
+  .err{grid-column:1 / -1;color:#8a2e1d;font-size:14px;text-align:center;min-height:1em;margin:0;}
+  .done{text-align:center;}
+  .done h3{font-size:32px;margin-bottom:8px;}
+  .done .when{font-family:'Spectral',serif;font-size:22px;color:var(--olive-deep);margin:16px 0 4px;}
+  .done p{color:var(--brown-soft);}
+
+  /* info */
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .info{border-top:1px solid var(--olive);padding-top:18px;}
+  .info h3{font-size:22px;margin-bottom:6px;}
+  .info p{margin:0;color:var(--brown-soft);font-size:15px;}
+  .faq{max-width:760px;margin:0 auto;}
+  .faq details{border-bottom:1px solid var(--line);padding:16px 0;}
+  .faq summary{cursor:pointer;font-family:'Spectral',serif;font-size:20px;color:var(--brown);list-style:none;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:'+';float:right;color:var(--olive-deep);}
+  .faq details[open] summary::after{content:'–';}
+  .faq p{color:var(--brown-soft);margin:10px 0 0;}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 36px;text-align:center;}
+  footer img{height:50px;margin:0 auto 12px;}
+  .foot-tag{font-family:'Spectral',serif;font-style:italic;font-size:19px;color:var(--brown);}
+  .foot-tag sup{font-style:normal;font-size:.5em;}
+  .foot-legal{margin-top:18px;color:var(--brown-soft);font-size:12px;}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr;min-height:0;}
+    .hero-photo{height:340px;order:-1;}
+    .hero-copy{padding:40px 22px 46px;}
+    .info-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    form{grid-template-columns:1fr;}
+    .reserve-card{padding:30px 18px;}
+    .nav-inner img{height:44px;}
+    .nights{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" aria-label="Storyroot Photography home"><img src="storyroot_photography.png" alt="Storyroot Photography" /></a>
+    <a class="nav-link" href="index.html#sessions">All Sessions</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-copy">
+    <div class="kicker">Christmas Card Season</div>
+    <h1>Fall <em>Mini</em> Sessions</h1>
+    <p>Twenty minutes in the late afternoon light, at three of our favorite spots in the East Valley. Four families a night. Pick your time below and it's yours.</p>
+    <ul class="facts">
+      <li><strong>$250</strong>per session</li>
+      <li><strong>20</strong>minutes</li>
+      <li><strong>25+</strong>edited images</li>
+    </ul>
+    <div><a class="btn btn-solid" href="#times">See open times</a></div>
+  </div>
+  <div class="hero-photo"><img src="mini-sessions.jpg" alt="A family mini session with Storyroot Photography" /></div>
+</div>
+
+<section id="times">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Step One</div>
+      <h2>Choose your time</h2>
+      <p>Each night is at one location. Tap an open time to hold it.</p>
+      <div class="rule"></div>
+    </div>
+    <div id="previewBanner" class="preview-banner" hidden>Preview mode: booking isn't connected yet, so every time shows as open and nothing is saved.</div>
+    <div id="nights" class="nights"><div class="status-msg">Loading open times…</div></div>
+  </div>
+</section>
+
+<section class="reserve" id="reserve">
+  <div class="wrap">
+    <div class="reserve-card">
+      <div id="formView">
+        <div class="kicker" style="text-align:center;">Step Two</div>
+        <div class="picked" id="picked"><span class="none">Choose a time above to begin</span></div>
+        <form id="bookForm" novalidate>
+          <div><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required /></div>
+          <div><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" required /></div>
+          <div class="full"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required /></div>
+          <div class="full"><label for="f-people">How many people in the photos?</label>
+            <select id="f-people" name="people">
+              <option value="">Choose one</option>
+              <option>1–2</option><option>3–4</option><option>5–6</option><option>7–8</option><option>9 or more</option>
+            </select>
+          </div>
+          <div class="full"><label for="f-notes">Anything we should know? (optional)</label>
+            <textarea id="f-notes" name="notes" placeholder="Little ones, a pet coming along, a photo you're hoping for..."></textarea></div>
+          <div class="hp" aria-hidden="true"><label for="f-company">Company</label><input id="f-company" name="company" type="text" tabindex="-1" autocomplete="off" /></div>
+          <p class="err" id="err" role="alert"></p>
+          <div class="full"><button class="btn btn-solid" id="submitBtn" type="submit" disabled>Reserve this time</button></div>
+          <p class="fine full">Reserving holds your time. We'll follow up with your session agreement and the $100 retainer that confirms it. The remaining $150 is due the day of your shoot.</p>
+        </form>
+      </div>
+      <div id="doneView" class="done" hidden>
+        <div class="kicker">You're on the calendar</div>
+        <h3>Your time is held</h3>
+        <div class="when" id="doneWhen"></div>
+        <p id="doneWhere"></p>
+        <p>A confirmation is on its way to your email. We'll reach out soon with your session agreement and the $100 retainer that confirms your spot.</p>
+        <p style="margin-top:22px;"><a class="btn btn-ghost" href="index.html">Back to Storyroot</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="details">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">The Details</div>
+      <h2>Where we'll meet</h2>
+      <div class="rule"></div>
+    </div>
+    <div class="info-grid">
+      <div class="info"><h3>Gilbert Reservoir</h3><p>Higley &amp; Ocotillo, Gilbert. Fridays, October 23, November 6 and November 20.</p></div>
+      <div class="info"><h3>Veterans Oasis Park</h3><p>Lindsay &amp; Chandler Heights, Chandler. Fridays, October 30 and November 13.</p></div>
+      <div class="info"><h3>Usery Mountain</h3><p>Ellsworth &amp; McDowell, Mesa. Saturdays, November 7 and November 14. Usery is a county park with a per-vehicle entry fee at the gate.</p></div>
+    </div>
+
+    <div class="faq" style="margin-top:56px;">
+      <details><summary>What's included?</summary><p>A 20-minute session, 25 or more edited digital images, and our style guide to help you plan what to wear. $250 in total.</p></details>
+      <details><summary>How do I confirm my spot?</summary><p>Reserving online holds your time right away. We'll then send your session agreement and a $100 non-refundable retainer. The remaining $150 is due the day of your shoot.</p></details>
+      <details><summary>Where exactly do we meet?</summary><p>We'll send the exact meeting spot with your confirmation, along with parking notes.</p></details>
+      <details><summary>Need to change your time?</summary><p>Reply to your confirmation email and we'll move you to another open time if one is available.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="storyroot_photography.png" alt="Storyroot Photography" />
+    <div class="foot-tag">Every Fingerprint Tells a Story<sup>&trade;</sup></div>
+    <div class="foot-legal">&copy; <span id="yr"></span> Storyroot Photography &nbsp;·&nbsp; <a href="mailto:photo@storyrootmemoryco.com" style="color:var(--olive-deep);">photo@storyrootmemoryco.com</a></div>
+  </div>
+</footer>
+
+<script>
+/* ===== Paste the Google Apps Script web app URL here (ends in /exec) ===== */
+var BOOKING_URL = "https://script.google.com/macros/s/AKfycbwzJQo9gExGj8F_AeUdhotgLarLhj2tzwvYQs_-skZH4nQU29IWh-rbSaFFENS_pINfuw/exec";
+
+/* Used only in PREVIEW mode, before BOOKING_URL is set. The Google Sheet is the real source. */
+var PREVIEW = [
+  ["2026-10-23","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
+  ["2026-10-30","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:30 PM","4:00 PM","4:30 PM","5:00 PM"]],
+  ["2026-11-06","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
+  ["2026-11-07","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
+  ["2026-11-13","Veterans Oasis Park","Lindsay & Chandler Heights, Chandler",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
+  ["2026-11-14","Usery Mountain Regional Park","Ellsworth & McDowell, Mesa",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]],
+  ["2026-11-20","Gilbert Reservoir","Higley & Ocotillo, Gilbert",["3:15 PM","3:45 PM","4:15 PM","4:45 PM"]]
+];
+
+(function () {
+  document.getElementById("yr").textContent = new Date().getFullYear();
+
+  var nightsEl = document.getElementById("nights");
+  var pickedEl = document.getElementById("picked");
+  var form = document.getElementById("bookForm");
+  var btn = document.getElementById("submitBtn");
+  var errEl = document.getElementById("err");
+  var selected = null;   // { id, date, time, location, area }
+  var preview = !BOOKING_URL;
+
+  var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function parts(date) { var p = date.split("-"); return { y:+p[0], m:+p[1]-1, d:+p[2] }; }
+  function dayName(date) { var p = parts(date); return DAYS[new Date(Date.UTC(p.y,p.m,p.d,12)).getUTCDay()]; }
+  function monthDay(date) { var p = parts(date); return MONTHS[p.m] + " " + p.d; }
+  function to24(t) { var m = t.match(/(\d+):(\d+)\s*(AM|PM)/i); var h = (+m[1]) % 12; if (/pm/i.test(m[3])) h += 12; return ("0"+h).slice(-2) + ":" + m[2]; }
+  function isPast(id) { var t = new Date(id.replace(" ","T") + ":00-07:00"); return t.getTime() < Date.now(); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  function previewSlots() {
+    var out = [];
+    PREVIEW.forEach(function (n) {
+      n[3].forEach(function (t) {
+        var id = n[0] + " " + to24(t);
+        out.push({ id:id, date:n[0], time:t, location:n[1], area:n[2], open:!isPast(id) });
+      });
+    });
+    return out;
+  }
+
+  function render(slots) {
+    var byDate = {}, order = [];
+    slots.forEach(function (s) {
+      if (!byDate[s.date]) { byDate[s.date] = []; order.push(s.date); }
+      byDate[s.date].push(s);
+    });
+    order.sort();
+    // hide nights that are completely in the past
+    order = order.filter(function (d) { return byDate[d].some(function (s) { return !isPast(s.id); }); });
+    if (!order.length) { nightsEl.innerHTML = '<div class="status-msg">All of this season\'s mini sessions have passed. Thank you.</div>'; return; }
+
+    nightsEl.innerHTML = order.map(function (date) {
+      var list = byDate[date].sort(function (a, b) { return a.id < b.id ? -1 : 1; });
+      var anyOpen = list.some(function (s) { return s.open; });
+      var first = list[0];
+      return '<div class="night' + (anyOpen ? '' : ' is-full') + '">' +
+        '<div class="night-day">' + dayName(date) + '</div>' +
+        '<h3>' + monthDay(date) + '</h3>' +
+        '<div class="night-loc">' + esc(first.location) + (first.area ? '<span>' + esc(first.area) + '</span>' : '') + '</div>' +
+        '<div class="times">' + list.map(function (s) {
+          var sel = selected && selected.id === s.id ? ' selected' : '';
+          return s.open
+            ? '<button type="button" class="slot' + sel + '" data-id="' + esc(s.id) + '">' + esc(s.time) + '</button>'
+            : '<button type="button" class="slot" disabled>' + esc(s.time) + '<small>Reserved</small></button>';
+        }).join('') + '</div>' +
+        (anyOpen ? '' : '<div class="full-note">This night is full</div>') +
+      '</div>';
+    }).join('');
+
+    window.__slots = {};
+    slots.forEach(function (s) { window.__slots[s.id] = s; });
+  }
+
+  function load() {
+    if (preview) {
+      document.getElementById("previewBanner").hidden = false;
+      var s = previewSlots(); render(s); return Promise.resolve(s);
+    }
+    return fetch(BOOKING_URL, { cache: "no-store" })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error("load");
+        render(data.slots);
+        if (selected && !(window.__slots[selected.id] && window.__slots[selected.id].open)) clearSelection();
+        return data.slots;
+      })
+      .catch(function () {
+        nightsEl.innerHTML = '<div class="status-msg">We couldn\'t load the open times just now. Please refresh, or email <a href="mailto:photo@storyrootmemoryco.com">photo@storyrootmemoryco.com</a>.</div>';
+      });
+  }
+
+  function clearSelection() {
+    selected = null;
+    pickedEl.innerHTML = '<span class="none">Choose a time above to begin</span>';
+    btn.disabled = true;
+  }
+
+  nightsEl.addEventListener("click", function (e) {
+    var b = e.target.closest("button.slot");
+    if (!b || b.disabled) return;
+    selected = window.__slots[b.getAttribute("data-id")];
+    nightsEl.querySelectorAll(".slot.selected").forEach(function (x) { x.classList.remove("selected"); });
+    b.classList.add("selected");
+    pickedEl.innerHTML = '<h3>' + dayName(selected.date) + ', ' + monthDay(selected.date) + ' · ' + esc(selected.time) + '</h3>' +
+                         '<p>' + esc(selected.location) + (selected.area ? ', ' + esc(selected.area) : '') + '</p>';
+    btn.disabled = false;
+    errEl.textContent = "";
+    document.getElementById("reserve").scrollIntoView({ behavior: "smooth" });
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    errEl.textContent = "";
+    if (!selected) { errEl.textContent = "Choose a time above first."; return; }
+    var f = form.elements;
+    var data = {
+      slotId: selected.id,
+      name: f.name.value.trim(), phone: f.phone.value.trim(), email: f.email.value.trim(),
+      people: f.people.value, notes: f.notes.value.trim(), company: f.company.value
+    };
+    if (!data.name || !data.phone || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      errEl.textContent = "Please add your name, phone and a valid email."; return;
+    }
+
+    var whenText = dayName(selected.date) + ", " + monthDay(selected.date) + " at " + selected.time;
+    var whereText = selected.location + (selected.area ? " (" + selected.area + ")" : "");
+
+    if (preview) {
+      errEl.textContent = "Preview mode: booking isn't connected yet, so nothing was saved.";
+      return;
+    }
+
+    btn.disabled = true; btn.textContent = "Reserving…";
+    // text/plain keeps this a simple request that Google Apps Script accepts from any site
+    fetch(BOOKING_URL, { method: "POST", body: JSON.stringify(data) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.ok) {
+          document.getElementById("formView").hidden = true;
+          document.getElementById("doneView").hidden = false;
+          document.getElementById("doneWhen").textContent = whenText;
+          document.getElementById("doneWhere").textContent = whereText;
+          document.getElementById("reserve").scrollIntoView({ behavior: "smooth" });
+          load();
+          return;
+        }
+        var msg = {
+          taken: "Someone reserved that time a moment ago. Please choose another open time above.",
+          past: "That time has already passed. Please choose another.",
+          missing: "Please add your name, phone and a valid email.",
+          busy: "Lots of people are booking right now. Please try again in a few seconds."
+        }[res.error] || "Something went wrong. Please try again, or email photo@storyrootmemoryco.com.";
+        errEl.textContent = msg;
+        if (res.error === "taken" || res.error === "past") { clearSelection(); load(); document.getElementById("times").scrollIntoView({ behavior: "smooth" }); }
+      })
+      .catch(function () { errEl.textContent = "We couldn't reach the booking system. Please try again, or email photo@storyrootmemoryco.com."; })
+      .finally(function () { btn.textContent = "Reserve this time"; if (selected) btn.disabled = false; });
+  });
+
+  load();
+  // keep availability fresh while someone is deciding
+  if (!preview) setInterval(load, 60000);
+})();
+</script>
+</body>
+</html>
