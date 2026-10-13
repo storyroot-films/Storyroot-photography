@@ -258,6 +258,30 @@
   .parent-cta{text-align:center;margin-top:44px;}
   .parent-note{text-align:center;color:var(--brown-soft);font-size:12px;margin-top:20px;font-style:italic;opacity:.8;}
 
+
+  /* ---------- portfolio teaser: one card per session type, one tap into the portfolio ---------- */
+  .work{padding-bottom:76px;}
+  .work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .wcard{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:var(--sand);text-decoration:none;box-shadow:var(--shadow);}
+  .wcard img.ph{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1);}
+  .wcard:hover img.ph{transform:scale(1.04);}
+  .wcard::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(25,18,10,.74) 0%,rgba(25,18,10,.2) 30%,rgba(25,18,10,0) 44%);}
+  .wcard .wtxt{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 22px 22px;color:#fff;}
+  .wcard h3{display:flex;align-items:center;gap:10px;color:#fff;font-size:28px;line-height:1.1;font-weight:400;}
+  .wcard h3 img{width:20px;flex:0 0 auto;opacity:.95;}
+  .wcard .wsee{display:inline-flex;align-items:center;gap:10px;margin-top:12px;text-transform:uppercase;letter-spacing:.18em;font-size:11px;padding:10px 16px;border:1px solid rgba(255,255,255,.85);border-radius:2px;transition:.2s;}
+  .wcard:hover .wsee{background:#fff;color:var(--brown);}
+  .work-cta{text-align:center;margin-top:36px;}
+  @media(max-width:900px){.work-grid{grid-template-columns:1fr 1fr;gap:12px;}}
+  @media(max-width:600px){
+    .work-grid{grid-template-columns:1fr 1fr;gap:10px;}
+    .wcard .wtxt{padding:12px 12px 13px;}
+    .wcard h3{font-size:18px;gap:7px;}
+    .wcard h3 img{width:14px;}
+    .wcard .wsee{font-size:9.5px;letter-spacing:.12em;padding:7px 10px;margin-top:8px;}
+    .work-cta .btn{width:100%;text-align:center;}
+  }
+
   /* ---------- footer ---------- */
   footer{background:var(--cream);border-top:1px solid var(--line);padding:56px 0 40px;}
   .foot-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;}
@@ -325,6 +349,7 @@
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="#sessions">Sessions</a>
+      <a href="portfolio">Portfolio</a>
       <a href="#about">About</a>
       <a href="#travel">Utah &amp; Travel</a>
       <a href="#how">How It Works</a>
@@ -372,6 +397,27 @@
         <a class="btn btn-ghost" href="#sessions" style="margin-top:8px;">See Session Options</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= RECENT WORK (full gallery lives at /portfolio) ================= -->
+<section class="work" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">Our Work</div>
+      <h2>See our sessions</h2>
+      <p>Tap a session type to see real Storyroot clients.</p>
+      <div class="rule"></div>
+    </div>
+    <div class="work-grid">
+      <a class="wcard" href="portfolio#families"><img class="ph" src="portfolio-photos/families-parker-family-2024-01-home.jpg" alt="Families photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Families</h3><span class="wsee">See more &rarr;</span></div></a>
+      <a class="wcard" href="portfolio#missionaries"><img class="ph" src="portfolio-photos/missionaries-kenli-clare-2026-06-home.jpg" alt="Missionaries photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Missionaries</h3><span class="wsee">See more &rarr;</span></div></a>
+      <a class="wcard" href="portfolio#seniors"><img class="ph" src="portfolio-photos/seniors-maren-olsen-2024-01-home.jpg" alt="Seniors photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Seniors</h3><span class="wsee">See more &rarr;</span></div></a>
+      <a class="wcard" href="portfolio#newborn"><img class="ph" src="portfolio-photos/maternity-alexia-ledger-2023-11-card.jpg" alt="Newborn &amp; Maternity photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Newborns</h3><span class="wsee">See more &rarr;</span></div></a>
+      <a class="wcard" href="portfolio#baptisms"><img class="ph" src="portfolio-photos/baptisms-grace-tibbits-2026-13-card.jpg" alt="Baptisms photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Baptisms</h3><span class="wsee">See more &rarr;</span></div></a>
+      <a class="wcard" href="portfolio#couples"><img class="ph" src="portfolio-photos/couples-ryann-netzley-2024-04-home.jpg" alt="Couples photographed by Storyroot Photography" loading="lazy" /><div class="wtxt"><h3><img src="storyroot-fingerprint-white.png" alt="" />Couples</h3><span class="wsee">See more &rarr;</span></div></a>
+    </div>
+    <div class="work-cta"><a class="btn btn-solid" href="portfolio">View the Full Portfolio</a></div>
   </div>
 </section>
 

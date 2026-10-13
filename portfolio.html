@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio · Storyroot Photography</title>
+<meta name="description" content="See real sessions by Storyroot Photography — families, missionaries, seniors, maternity and newborn, baptisms, couples and headshots across Arizona." />
+
+<!-- ==========================================================================
+     STORYROOT PHOTOGRAPHY — Portfolio page   (www.storyrootphotography.com/portfolio)
+
+     PHOTOS live in  website/portfolio-photos/  — four files per photo:
+       name.jpg        2000px, full-screen viewer
+       name-sm.jpg      900px, the "see more" grid (whole photo, never cropped)
+       name-card.jpg   800x1000, covers + small previews (cropped around the faces)
+       name-ring.jpg   320x320, the round session buttons
+     Resized only, never graded. Each carries the colour-matched fingerprint.
+
+     To change a section's cover or its three small previews, edit CATS below.
+========================================================================== -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --brown:#4a3119; --brown-soft:#6b4e33;
+    --olive:#7c853e; --olive-deep:#5f6730;
+    --cream:#f7f4ee; --sand:#efe9df; --sand-deep:#e6ddcd;
+    --ink:#3a2c1c; --line:#d9cfbd;
+    --shadow:0 24px 60px -30px rgba(74,49,25,.5);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Jost',system-ui,sans-serif;font-weight:300;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Spectral',Georgia,serif;font-weight:400;margin:0;color:var(--brown);}
+  a{color:inherit;}
+  img{display:block;max-width:100%;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 26px;}
+
+  /* ---------- nav (same as home) ---------- */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(247,244,238,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 26px;max-width:1120px;margin:0 auto;position:relative;}
+  .nav-logo img{height:60px;width:auto;}
+  .nav-links{position:absolute;top:calc(100% + 6px);right:26px;z-index:60;min-width:250px;display:flex;flex-direction:column;background:var(--cream);border:1px solid var(--line);border-radius:6px;box-shadow:0 22px 42px -20px rgba(74,49,25,.55);max-height:0;overflow:hidden;opacity:0;pointer-events:none;transition:max-height .3s ease,opacity .22s ease;}
+  .nav-links.open{max-height:520px;opacity:1;pointer-events:auto;padding:6px 0;}
+  .nav-links a{text-decoration:none;text-transform:uppercase;letter-spacing:.16em;font-size:12.5px;color:var(--brown-soft);padding:14px 24px;border-bottom:1px solid var(--line);}
+  .nav-links a:last-child{border-bottom:0;}
+  .nav-links a:hover,.nav-links a[aria-current]{color:var(--olive-deep);}
+  .nav-links a.nav-cta{margin:12px 20px 6px;text-align:center;font-size:12px;font-weight:500;background:var(--brown);color:#fff;padding:14px;border-radius:2px;border-bottom:0;}
+  .menu-btn{display:flex;background:none;border:0;cursor:pointer;padding:0;width:44px;height:44px;align-items:center;justify-content:center;}
+  .menu-btn span,.menu-btn span::before,.menu-btn span::after{display:block;width:24px;height:2px;background:var(--brown);border-radius:2px;transition:.25s ease;}
+  .menu-btn span{position:relative;}
+  .menu-btn span::before,.menu-btn span::after{content:"";position:absolute;left:0;}
+  .menu-btn span::before{top:-7px;} .menu-btn span::after{top:7px;}
+  .menu-btn.open span{background:transparent;}
+  .menu-btn.open span::before{top:0;transform:rotate(45deg);}
+  .menu-btn.open span::after{top:0;transform:rotate(-45deg);}
+
+  /* ---------- hero ----------
+     Desktop: cream panel with the logo + the whole family photo beside it (never cropped).
+     Phone: the photo fills the screen; logo sits in the sky above everyone's heads. */
+  .hero{background:var(--sand);}
+  .hero-grid{display:grid;grid-template-columns:1fr auto;}
+  .hero-copy{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:60px 6vw;}
+  .hero-copy .logo{width:min(330px,80%);}
+  .hero-copy .kick{text-transform:uppercase;letter-spacing:.42em;font-size:12.5px;color:var(--olive-deep);margin:34px 0 12px;}
+  .hero-copy h1{font-size:clamp(40px,4.6vw,62px);line-height:1.05;font-weight:300;}
+  .hero-copy h1 em{font-style:italic;color:var(--olive-deep);}
+  .hero-copy .tag{width:min(360px,90%);margin:22px auto 30px;opacity:.9;}
+  .hero-photo{position:relative;height:min(82vh,780px);min-height:560px;aspect-ratio:2/3;overflow:hidden;}
+  .hero-photo img.bg{width:100%;height:100%;object-fit:cover;object-position:50% 0%;}
+  .hero-photo .over{display:none;}
+  .down{display:inline-flex;align-items:center;gap:10px;text-decoration:none;text-transform:uppercase;letter-spacing:.18em;font-size:12px;padding:15px 28px;background:var(--brown);color:var(--cream);border-radius:2px;transition:background .2s;}
+  .down:hover{background:var(--olive-deep);}
+
+  /* ---------- category picker ---------- */
+  .picker{padding:58px 0 18px;text-align:center;}
+  .picker .lead{color:var(--brown-soft);font-size:17px;margin:0 auto 30px;}
+  .picker-row{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;max-width:1000px;margin:0 auto;justify-items:center;align-items:start;}
+  .pick{text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;width:100%;}
+  .pick .ring{position:relative;width:128px;height:128px;border-radius:50%;border:1.5px solid var(--olive);transition:transform .3s ease,border-color .3s;flex:0 0 auto;}
+  .pick .ring img{position:absolute;inset:4px;width:calc(100% - 8px);height:calc(100% - 8px);object-fit:cover;border-radius:50%;}
+  .pick span{text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:var(--brown);line-height:1.4;text-align:center;}
+  .pick:hover .ring{transform:translateY(-3px);border-color:var(--brown);}
+
+  .fp-div{display:flex;align-items:center;justify-content:center;gap:18px;margin:58px auto;max-width:460px;}
+  .fp-div::before,.fp-div::after{content:"";flex:1;height:1px;background:var(--line);}
+  .fp-div img{width:30px;opacity:.9;}
+
+  /* ---------- a category ---------- */
+  .cat{scroll-margin-top:96px;}
+  .cat-card{display:grid;grid-template-columns:1.08fr .92fr;background:#fff;border:1px solid var(--line);border-radius:4px;overflow:hidden;box-shadow:var(--shadow);}
+  .cat:nth-of-type(even) .cat-card{grid-template-columns:.92fr 1.08fr;}
+  .cat:nth-of-type(even) .cover{order:2;}
+  .cover{position:relative;aspect-ratio:4/5;overflow:hidden;cursor:zoom-in;background:var(--sand);}
+  .cover img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1);}
+  .cover:hover img{transform:scale(1.03);}
+  .cat-text{padding:54px 50px;display:flex;flex-direction:column;justify-content:center;}
+  .cat-text .num{display:flex;align-items:center;gap:12px;text-transform:uppercase;letter-spacing:.3em;font-size:11.5px;color:var(--olive-deep);margin-bottom:16px;}
+  .cat-text .num img{width:18px;}
+  .cat-text h2{font-size:clamp(32px,3.6vw,46px);line-height:1.1;}
+  .cat-text p{color:var(--brown-soft);font-size:16.5px;margin:16px 0 26px;}
+  .peek{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:30px;}
+  .peek button{padding:0;border:0;background:var(--sand);aspect-ratio:4/5;overflow:hidden;cursor:zoom-in;border-radius:2px;}
+  .peek img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .peek button:hover img{transform:scale(1.05);}
+  .see{font:inherit;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;cursor:pointer;
+       text-transform:uppercase;letter-spacing:.18em;font-size:12.5px;font-weight:400;padding:18px 22px;border-radius:2px;
+       background:var(--brown);color:var(--cream);border:0;transition:background .2s;}
+  .see:hover{background:var(--olive-deep);}
+  .see .arr{display:inline-block;transition:transform .35s ease;font-size:15px;}
+  .cat.open .see .arr{transform:rotate(180deg);}
+
+  .more{display:grid;grid-template-rows:0fr;transition:grid-template-rows .6s ease;}
+  .cat.open .more{grid-template-rows:1fr;}
+  .more > div{overflow:hidden;}
+  .grid{columns:3 280px;column-gap:12px;padding-top:14px;}
+  .shot{display:block;break-inside:avoid;margin:0 0 12px;cursor:zoom-in;overflow:hidden;border-radius:3px;background:var(--sand);padding:0;border:0;width:100%;}
+  .shot img{width:100%;height:auto;opacity:0;transition:opacity .5s ease,transform .8s cubic-bezier(.2,.7,.2,1);}
+  .shot img.in{opacity:1;}
+  .shot:hover img{transform:scale(1.025);}
+  .less{text-align:center;padding:8px 0 4px;}
+  .less button{font:inherit;background:none;border:1px solid var(--brown);color:var(--brown);text-transform:uppercase;letter-spacing:.16em;font-size:11.5px;padding:13px 26px;border-radius:2px;cursor:pointer;}
+  .less button:hover{background:var(--brown);color:var(--cream);}
+
+  .cta{background:var(--sand);text-align:center;padding:80px 26px;margin-top:70px;}
+  .cta img.fp{width:54px;margin:0 auto 22px;}
+  .cta h2{font-size:clamp(30px,3.8vw,44px);}
+  .cta p{color:var(--brown-soft);max-width:48ch;margin:14px auto 30px;font-size:16.5px;}
+  .cta .tag{width:min(380px,80vw);margin:40px auto 0;opacity:.85;}
+  .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{display:inline-block;text-decoration:none;text-transform:uppercase;letter-spacing:.16em;font-size:12px;padding:16px 30px;border-radius:2px;transition:.2s;}
+  .btn-solid{background:var(--brown);color:var(--cream);}
+  .btn-solid:hover{background:var(--olive-deep);}
+  .btn-ghost{border:1px solid var(--brown);color:var(--brown);}
+  .btn-ghost:hover{background:var(--brown);color:var(--cream);}
+
+  footer{background:var(--cream);border-top:1px solid var(--line);padding:56px 0 40px;}
+  .foot-grid{display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;max-width:1120px;margin:0 auto;padding:0 26px;}
+  .foot-logo img{height:56px;}
+  .foot-tag{font-family:'Spectral',serif;font-style:italic;font-size:20px;color:var(--brown);}
+  .foot-tag sup{font-style:normal;font-size:.5em;}
+  .foot-legal{max-width:1120px;margin:34px auto 0;padding:22px 26px 0;border-top:1px solid var(--line);text-align:center;color:var(--brown-soft);font-size:12px;line-height:1.8;}
+
+  .lb{position:fixed;inset:0;z-index:100;background:#1d1710;display:none;flex-direction:column;align-items:center;justify-content:center;}
+  .lb.open{display:flex;}
+  .lb-top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:14px 16px 0 22px;z-index:2;}
+  .lb-top img{height:40px;width:auto;opacity:.95;}
+  .lb-top button{background:none;border:0;color:#f7f4ee;font-size:34px;line-height:1;width:48px;height:48px;cursor:pointer;}
+  .lb figure{margin:0;display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:72px 64px 56px;}
+  .lb figure img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transition:opacity .25s ease;}
+  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);background:none;border:0;color:#f7f4ee;font-family:'Spectral',serif;font-size:44px;width:60px;height:90px;cursor:pointer;opacity:.75;}
+  .lb .nav:hover{opacity:1;}
+  .lb .prev{left:4px;} .lb .next{right:4px;}
+  .lb .count{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#cfc6b6;text-transform:uppercase;letter-spacing:.24em;font-size:11px;}
+
+  @media(max-width:900px){
+    .picker-row{grid-template-columns:repeat(3,1fr);gap:26px 10px;max-width:460px;}
+    .cat-card,.cat:nth-of-type(even) .cat-card{grid-template-columns:1fr;}
+    .cat:nth-of-type(even) .cover{order:0;}
+    .cat-text{padding:30px 24px 30px;}
+    /* phone hero: photo full screen, logo + words over it */
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-copy{display:none;}
+    .hero-photo{height:auto;min-height:0;width:100%;aspect-ratio:2/3;max-height:none;}
+    .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(25,18,10,.42) 0%,rgba(25,18,10,0) 22%,rgba(25,18,10,0) 52%,rgba(25,18,10,.72) 100%);}
+    .hero-photo .over{display:flex;position:absolute;inset:0;z-index:2;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;color:#fff;padding:5.5% 18px 7%;}
+    .over .logo{width:52%;max-width:300px;filter:drop-shadow(0 2px 12px rgba(0,0,0,.25));}
+    .over .kick{text-transform:uppercase;letter-spacing:.4em;font-size:11.5px;margin-bottom:8px;}
+    .over h1{color:#fff;font-weight:300;font-size:clamp(34px,9.4vw,56px);line-height:1.04;}
+    .over h1 em{font-style:italic;}
+    .over .tag{width:80%;max-width:380px;margin:14px auto 0;}
+  }
+  @media(max-width:640px){
+    .nav-logo img{height:50px;}
+    .nav-links{left:16px;right:16px;min-width:0;}
+    .wrap{padding:0 14px;}
+    .picker{padding:40px 0 6px;}
+    .picker .lead{font-size:16px;margin-bottom:24px;}
+    .pick .ring{width:96px;height:96px;}
+    .pick span{font-size:10px;letter-spacing:.12em;}
+    .fp-div{margin:40px auto;}
+    .cat-text h2{font-size:32px;}
+    .cat-text p{font-size:15.5px;margin:12px 0 20px;}
+    .peek{gap:6px;margin-bottom:22px;}
+    .grid{columns:2;column-gap:8px;}
+    .shot{margin-bottom:8px;}
+    .lb figure{padding:64px 0 48px;}
+    .lb .nav{display:none;}
+    .cta{padding:60px 20px;}
+    .btns{flex-direction:column;}
+    .btns .btn{width:100%;text-align:center;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="Storyroot Photography home"><img src="storyroot_photography.png" alt="Storyroot Photography" /></a>
+    <nav class="nav-links" id="navLinks">
+      <a href="/#sessions">Sessions</a>
+      <a href="/portfolio" aria-current="page">Portfolio</a>
+      <a href="/#about">About</a>
+      <a href="/#travel">Utah &amp; Travel</a>
+      <a href="/#how">How It Works</a>
+      <a class="nav-cta" href="/#book">Book Now</a>
+    </nav>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <img class="logo" src="storyroot_photography.png" alt="Storyroot Photography" />
+      <div class="kick">The Portfolio</div>
+      <h1>Real people,<br/><em>real</em> stories</h1>
+      <img class="tag" src="storyroot-tagline-walnut.png" alt="Every Fingerprint Tells a Story" />
+      <a class="down" href="#picker">See our sessions <span aria-hidden="true">&#8595;</span></a>
+    </div>
+    <div class="hero-photo">
+      <img class="bg" src="portfolio-hero-lunt.jpg" alt="A family of six standing together under the trees, photographed by Storyroot Photography" />
+      <div class="over">
+        <img class="logo" src="storyroot-logo-white.png" alt="Storyroot Photography" />
+        <div>
+          <div class="kick">The Portfolio</div>
+          <h1>Real people, <em>real</em> stories</h1>
+          <img class="tag" src="storyroot-tagline-white.png" alt="Every Fingerprint Tells a Story" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="picker">
+  <div class="wrap">
+    <p class="lead">Tap a session type to see the photos.</p>
+    <div class="picker-row" id="picker"></div>
+  </div>
+</section>
+
+<main class="wrap" id="cats"></main>
+
+<section class="cta">
+  <img class="fp" src="storyroot-fingerprint-green.png" alt="" aria-hidden="true" />
+  <h2>Ready to tell your story?</h2>
+  <p>If these feel like you, we'd love to meet your people. Pick a session and check open dates.</p>
+  <div class="btns">
+    <a class="btn btn-solid" href="/#book">Check Availability</a>
+    <a class="btn btn-ghost" href="/#sessions">See Sessions &amp; Pricing</a>
+  </div>
+  <img class="tag" src="storyroot-tagline-walnut.png" alt="Every Fingerprint Tells a Story" />
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <a class="foot-logo" href="/" aria-label="Storyroot Photography"><img src="storyroot_photography.png" alt="Storyroot Photography" /></a>
+    <div class="foot-tag">Every Fingerprint Tells a Story<sup>&trade;</sup></div>
+  </div>
+  <div class="foot-legal">&copy; <span id="yr"></span> Storyroot Photography. All rights reserved. &nbsp;“Every Fingerprint Tells a Story”&trade; and the Storyroot fingerprint mark are trademarks of Storyroot Photography.</div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <div class="lb-top"><img src="storyroot-logo-white.png" alt="Storyroot Photography" /><button id="lbX" aria-label="Close">&times;</button></div>
+  <button class="nav prev" id="lbP" aria-label="Previous photo">&#8249;</button>
+  <figure id="lbFig"><img id="lbImg" alt="" /></figure>
+  <button class="nav next" id="lbN" aria-label="Next photo">&#8250;</button>
+  <div class="count" id="lbC"></div>
+</div>
+
+<script>
+  document.getElementById("yr").textContent = new Date().getFullYear();
+  (function () {
+    var btn = document.getElementById("menuBtn"), links = document.getElementById("navLinks");
+    function close() { links.classList.remove("open"); btn.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
+    btn.addEventListener("click", function () { var o = links.classList.toggle("open"); btn.classList.toggle("open", o); btn.setAttribute("aria-expanded", o ? "true" : "false"); });
+    links.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", close); });
+    document.addEventListener("click", function (e) { if (!links.contains(e.target) && !btn.contains(e.target)) close(); });
+  })();
+
+  var DIR = "portfolio-photos/";
+  function U(name, kind) { return DIR + name + (kind ? "-" + kind : "") + ".jpg"; }
+
+  /* sections in page order. cover = big photo, peek = the three small ones under the title */
+  var CATS = [
+    {c:"fam", id:"families",     pick:"Families",     title:"Family Sessions",     line:"Golden-hour sessions for the whole crew, from grandparents to the littlest ones.",
+     cover:"families-parker-family-2024-01", peek:["families-john-family-2025-04","families-lunt-family-2025-10","families-nielson-family-2024-21"], more:"family"},
+    {c:"mis", id:"missionaries", pick:"Missionaries", title:"Missionary Sessions", line:"Flags, temple steps and the send-off photos they'll keep for the rest of their lives.",
+     cover:"missionaries-kenli-clare-2026-06", peek:["missionaries-conner-mcdougal-2026-03","missionaries-sam-john-2023-14","missionaries-randie-holmes-2023-03"], more:"missionary"},
+    {c:"sen", id:"seniors",      pick:"Seniors",      title:"Senior Sessions",     line:"Caps, gowns and a look at who they've become.",
+     cover:"seniors-maren-olsen-2024-01", peek:["seniors-kenli-clare-2025-08","seniors-livia-lunt-2025-10","seniors-maren-olsen-2024-18"], more:"senior"},
+    {c:"mat", id:"newborn",      pick:"Newborn &amp; Maternity", title:"Maternity &amp; Newborn", line:"The waiting, the welcome and every tiny detail in between.",
+     cover:"maternity-alexia-ledger-2023-11", peek:["maternity-ryann-netzley-2026-10","maternity-jackson-family-2023-16","maternity-ryann-netzley-2024-14"], more:"maternity &amp; newborn"},
+    {c:"bap", id:"baptisms",     pick:"Baptisms",     title:"Baptism Sessions",    line:"White dresses, temple grounds and a day worth remembering.",
+     cover:"baptisms-grace-tibbits-2026-13", peek:["baptisms-elly-bourgeous-2024-02","baptisms-grace-tibbits-2026-09","baptisms-elly-bourgeous-2024-12"], more:"baptism"},
+    {c:"cou", id:"couples",      pick:"Couples &amp; Headshots", title:"Couples &amp; Headshots", line:"Engagements, anniversaries and headshots that actually look like you.",
+     cover:"couples-ryann-netzley-2024-04", peek:["couples-britta-2024-06","couples-randie-holmes-2025-03","couples-bryn-nielson-2024-15"], more:"couples &amp; headshot"}
+  ];
+  /* category · file · width · height (of the -sm file) */
+  var PHOTOS = [["fam","families-john-family-2025-04",720,900],["fam","families-lunt-family-2025-10",600,900],["fam","families-holmes-family-2025-20",720,900],["fam","families-nielson-family-2024-16",600,900],["fam","families-parker-family-2024-18",600,900],["fam","families-nielson-family-2023-23",600,900],["fam","families-paige-kids-2023-02",595,900],["fam","families-bigler-family-2024-07",600,900],["fam","families-john-family-2025-19",900,600],["fam","families-lunt-family-2025-19",600,900],["fam","families-holmes-family-2025-04",600,900],["fam","families-nielson-family-2024-08",600,900],["fam","families-parker-family-2024-03",600,900],["fam","families-nielson-family-2023-13",600,900],["fam","families-paige-kids-2023-06",600,900],["fam","families-bigler-family-2024-15",600,900],["fam","families-john-family-2025-13",900,600],["fam","families-lunt-family-2025-06",600,900],["fam","families-holmes-family-2025-13",600,900],["fam","families-nielson-family-2024-13",600,900],["fam","families-parker-family-2024-08",900,600],["fam","families-nielson-family-2023-16",600,900],["fam","families-john-family-2025-17",600,900],["fam","families-lunt-family-2025-20",600,900],["fam","families-holmes-family-2025-22",600,900],["fam","families-nielson-family-2024-24",600,900],["fam","families-parker-family-2024-12",600,900],["fam","families-nielson-family-2023-02",900,600],["fam","families-john-family-2025-24",602,900],["fam","families-lunt-family-2025-23",900,600],["fam","families-holmes-family-2025-09",600,900],["fam","families-nielson-family-2024-01",720,900],["fam","families-parker-family-2024-01",600,900],["fam","families-nielson-family-2023-07",600,900],["fam","families-lunt-family-2025-01",600,900],["fam","families-nielson-family-2024-21",600,900],["fam","families-parker-family-2024-10",600,900],["sen","seniors-maren-olsen-2024-08",600,900],["sen","seniors-kenli-clare-2025-01",600,900],["sen","seniors-livia-lunt-2025-09",600,900],["sen","seniors-maren-olsen-2024-01",600,900],["sen","seniors-kenli-clare-2025-11",600,900],["sen","seniors-livia-lunt-2025-18",900,600],["sen","seniors-maren-olsen-2024-13",600,900],["sen","seniors-kenli-clare-2025-18",600,900],["sen","seniors-livia-lunt-2025-23",600,900],["sen","seniors-maren-olsen-2024-11",600,900],["sen","seniors-kenli-clare-2025-08",600,900],["sen","seniors-livia-lunt-2025-10",600,900],["sen","seniors-maren-olsen-2024-19",600,900],["sen","seniors-kenli-clare-2025-13",600,900],["sen","seniors-livia-lunt-2025-24",600,900],["sen","seniors-maren-olsen-2024-18",600,900],["sen","seniors-kenli-clare-2025-07",600,900],["sen","seniors-livia-lunt-2025-03",600,900],["sen","seniors-maren-olsen-2024-24",600,900],["sen","seniors-maren-olsen-2024-03",600,900],["mis","missionaries-randie-holmes-2023-23",600,900],["mis","missionaries-alina-dawson-2025-10",600,900],["mis","missionaries-livia-lunt-2025-16",676,900],["mis","missionaries-conner-mcdougal-2026-17",600,900],["mis","missionaries-sam-john-2023-14",900,600],["mis","missionaries-kenli-clare-2026-06",600,900],["mis","missionaries-randie-holmes-2023-03",600,900],["mis","missionaries-alina-dawson-2025-02",600,900],["mis","missionaries-livia-lunt-2025-22",900,676],["mis","missionaries-conner-mcdougal-2026-03",900,600],["mis","missionaries-sam-john-2023-09",600,900],["mis","missionaries-kenli-clare-2026-08",600,900],["mis","missionaries-randie-holmes-2023-18",600,900],["mis","missionaries-alina-dawson-2025-16",600,900],["mis","missionaries-livia-lunt-2025-04",676,900],["mis","missionaries-conner-mcdougal-2026-23",600,900],["mis","missionaries-sam-john-2023-04",600,900],["mis","missionaries-kenli-clare-2026-01",600,900],["mis","missionaries-randie-holmes-2023-07",506,900],["mis","missionaries-alina-dawson-2025-04",600,900],["mis","missionaries-livia-lunt-2025-24",676,900],["mis","missionaries-conner-mcdougal-2026-07",600,900],["mis","missionaries-sam-john-2023-13",900,600],["mis","missionaries-kenli-clare-2026-11",600,900],["mis","missionaries-livia-lunt-2025-13",676,900],["mis","missionaries-conner-mcdougal-2026-10",600,900],["mis","missionaries-kenli-clare-2026-24",600,900],["mat","maternity-ryann-netzley-2024-14",600,900],["mat","maternity-ryann-netzley-2026-19",600,900],["mat","maternity-holmes-family-2024-16",600,900],["mat","maternity-alexia-ledger-2023-04",900,600],["mat","maternity-jackson-family-2023-09",900,600],["mat","maternity-ryann-netzley-2024-16",600,900],["mat","maternity-ryann-netzley-2026-01",600,900],["mat","maternity-holmes-family-2024-10",600,900],["mat","maternity-alexia-ledger-2023-05",600,900],["mat","maternity-jackson-family-2023-21",600,900],["mat","maternity-ryann-netzley-2024-07",600,900],["mat","maternity-ryann-netzley-2026-13",600,900],["mat","maternity-holmes-family-2024-12",600,900],["mat","maternity-alexia-ledger-2023-10",600,900],["mat","maternity-jackson-family-2023-19",600,900],["mat","maternity-ryann-netzley-2024-17",600,900],["mat","maternity-ryann-netzley-2026-23",600,900],["mat","maternity-holmes-family-2024-05",600,900],["mat","maternity-alexia-ledger-2023-11",600,900],["mat","maternity-jackson-family-2023-03",900,600],["mat","maternity-ryann-netzley-2026-10",600,900],["mat","maternity-alexia-ledger-2023-24",900,600],["mat","maternity-jackson-family-2023-07",600,900],["mat","maternity-ryann-netzley-2026-24",600,900],["mat","maternity-alexia-ledger-2023-17",600,900],["mat","maternity-jackson-family-2023-16",600,900],["mat","maternity-ryann-netzley-2026-07",600,900],["mat","maternity-alexia-ledger-2023-23",766,900],["mat","maternity-jackson-family-2023-13",600,900],["mat","maternity-jackson-family-2023-23",600,900],["mat","maternity-jackson-family-2023-14",600,900],["bap","baptisms-elly-bourgeous-2024-19",600,900],["bap","baptisms-grace-tibbits-2026-02",600,900],["bap","baptisms-elly-bourgeous-2024-02",600,900],["bap","baptisms-grace-tibbits-2026-06",600,900],["bap","baptisms-elly-bourgeous-2024-21",600,900],["bap","baptisms-grace-tibbits-2026-01",600,900],["bap","baptisms-elly-bourgeous-2024-12",600,900],["bap","baptisms-grace-tibbits-2026-13",600,900],["bap","baptisms-elly-bourgeous-2024-23",600,900],["bap","baptisms-grace-tibbits-2026-09",600,900],["bap","baptisms-elly-bourgeous-2024-04",600,900],["bap","baptisms-grace-tibbits-2026-16",600,900],["bap","baptisms-elly-bourgeous-2024-17",600,900],["bap","baptisms-grace-tibbits-2026-14",600,900],["bap","baptisms-grace-tibbits-2026-19",900,600],["bap","baptisms-grace-tibbits-2026-23",600,900],["cou","couples-ryann-netzley-2024-13",600,900],["cou","couples-britta-2024-09",600,900],["cou","couples-randie-holmes-2025-06",600,900],["cou","couples-bryn-nielson-2024-09",600,900],["cou","couples-ryann-netzley-2024-01",600,900],["cou","couples-britta-2024-17",900,600],["cou","couples-randie-holmes-2025-13",600,900],["cou","couples-bryn-nielson-2024-17",600,900],["cou","couples-ryann-netzley-2024-09",900,600],["cou","couples-britta-2024-06",900,600],["cou","couples-randie-holmes-2025-03",600,900],["cou","couples-bryn-nielson-2024-02",600,900],["cou","couples-ryann-netzley-2024-04",600,900],["cou","couples-britta-2024-13",600,900],["cou","couples-randie-holmes-2025-21",600,900],["cou","couples-bryn-nielson-2024-15",600,900],["cou","couples-britta-2024-02",600,900],["cou","couples-randie-holmes-2025-20",600,900],["cou","couples-randie-holmes-2025-17",600,900],["cou","couples-randie-holmes-2025-07",900,600]];
+
+  var picker = document.getElementById("picker"), host = document.getElementById("cats"), GROUP = {};
+  function plain(t) { return t.replace(/&amp;/g, "&"); }
+  CATS.forEach(function (k, idx) {
+    var all = PHOTOS.filter(function (p) { return p[0] === k.c; });
+    function find(n) { return all.filter(function (p) { return p[1] === n; })[0]; }
+    var lead = [k.cover].concat(k.peek).map(find).filter(Boolean);
+    var rest = all.filter(function (p) { return lead.indexOf(p) < 0; });
+    k.list = lead.concat(rest); k.lead = lead.length; GROUP[k.id] = k;
+
+    var a = document.createElement("a"); a.className = "pick"; a.href = "#" + k.id;
+    a.innerHTML = '<div class="ring"><img src="' + U(k.cover, "ring") + '" alt=""></div><span>' + k.pick + "</span>";
+    a.addEventListener("click", function (e) { e.preventDefault(); openCat(k.id, true); });
+    picker.appendChild(a);
+
+    var alt = plain(k.title) + " by Storyroot Photography";
+    var s = document.createElement("section"); s.className = "cat"; s.id = k.id;
+    s.innerHTML =
+      (idx ? '<div class="fp-div"><img src="storyroot-fingerprint-green.png" alt=""></div>' : '<div style="height:34px"></div>') +
+      '<div class="cat-card">' +
+        '<div class="cover" data-v="0" role="button" tabindex="0" aria-label="Open photo"><img src="' + U(k.cover, "card") + '" alt="' + alt + '" loading="lazy"></div>' +
+        '<div class="cat-text">' +
+          '<div class="num"><img src="storyroot-fingerprint-green.png" alt="">0' + (idx + 1) + ' &nbsp;·&nbsp; ' + all.length + ' photos</div>' +
+          "<h2>" + k.title + "</h2><p>" + k.line + "</p>" +
+          '<div class="peek">' + lead.slice(1).map(function (p, i) {
+            return '<button data-v="' + (i + 1) + '" aria-label="Open photo"><img src="' + U(p[1], "card") + '" alt="' + alt + '" loading="lazy"></button>'; }).join("") + "</div>" +
+          '<button class="see" aria-expanded="false"><span class="lbl">See more ' + k.more + ' photos</span><span class="arr">&#8964;</span></button>' +
+        "</div>" +
+      "</div>" +
+      '<div class="more"><div><div class="grid"></div><div class="less"><button>Show less</button></div></div></div>';
+    host.appendChild(s); k.el = s;
+
+    s.querySelector(".see").addEventListener("click", function () { s.classList.contains("open") ? closeCat(k.id) : openCat(k.id, false); });
+    s.querySelector(".less button").addEventListener("click", function () { closeCat(k.id); s.scrollIntoView({ behavior: "smooth" }); });
+    s.querySelectorAll("[data-v]").forEach(function (el) {
+      el.addEventListener("click", function () { view(k, +el.dataset.v); });
+      el.addEventListener("keydown", function (e) { if (e.key === "Enter") view(k, +el.dataset.v); });
+    });
+  });
+
+  function openCat(id, scroll) {
+    var k = GROUP[id]; if (!k) return;
+    var grid = k.el.querySelector(".grid");
+    if (!grid.childElementCount) {
+      k.list.slice(k.lead).forEach(function (p, i) {
+        var b = document.createElement("button"); b.className = "shot"; b.setAttribute("aria-label", "Open photo");
+        var im = document.createElement("img"); im.width = p[2]; im.height = p[3]; im.loading = "lazy"; im.decoding = "async";
+        im.alt = plain(k.title) + " by Storyroot Photography";
+        im.onload = function () { im.classList.add("in"); };
+        im.src = U(p[1], "sm");
+        b.appendChild(im); b.addEventListener("click", function () { view(k, i + k.lead); }); grid.appendChild(b);
+      });
+    }
+    k.el.classList.add("open");
+    var see = k.el.querySelector(".see"); see.setAttribute("aria-expanded", "true");
+    see.querySelector(".lbl").textContent = "Showing all " + k.list.length + " photos";
+    if (scroll) k.el.scrollIntoView({ behavior: "smooth" });
+    if (history.replaceState) history.replaceState(null, "", "#" + id);
+  }
+  function closeCat(id) {
+    var k = GROUP[id]; k.el.classList.remove("open");
+    var see = k.el.querySelector(".see"); see.setAttribute("aria-expanded", "false");
+    see.querySelector(".lbl").innerHTML = "See more " + k.more + " photos";
+  }
+  var h = (location.hash || "").replace("#", "").toLowerCase();
+  var ALIAS = { family: "families", missionary: "missionaries", senior: "seniors", maternity: "newborn", baptism: "baptisms", headshots: "couples" };
+  h = ALIAS[h] || h;
+  if (GROUP[h]) setTimeout(function () { openCat(h, true); }, 150);
+
+  var lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg"), lbC = document.getElementById("lbC"), cur = null, pos = 0;
+  function show(n) {
+    pos = (n + cur.list.length) % cur.list.length; var p = cur.list[pos];
+    lbImg.style.opacity = 0; lbImg.onload = function () { lbImg.style.opacity = 1; };
+    lbImg.src = U(p[1]); lbImg.alt = plain(cur.title) + " by Storyroot Photography";
+    lbC.innerHTML = cur.title + " &nbsp;·&nbsp; " + (pos + 1) + " / " + cur.list.length;
+    [1, -1].forEach(function (d) { new Image().src = U(cur.list[(pos + d + cur.list.length) % cur.list.length][1]); });
+  }
+  function view(k, i) { cur = k; lb.classList.add("open"); document.body.style.overflow = "hidden"; show(i); }
+  function shut() { lb.classList.remove("open"); document.body.style.overflow = ""; }
+  document.getElementById("lbX").onclick = shut;
+  document.getElementById("lbP").onclick = function () { show(pos - 1); };
+  document.getElementById("lbN").onclick = function () { show(pos + 1); };
+  document.getElementById("lbFig").addEventListener("click", function (e) { if (e.target.tagName !== "IMG") shut(); });
+  document.addEventListener("keydown", function (e) {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") shut(); else if (e.key === "ArrowLeft") show(pos - 1); else if (e.key === "ArrowRight") show(pos + 1);
+  });
+  var x0 = null, y0 = 0;
+  lb.addEventListener("touchstart", function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener("touchend", function (e) {
+    if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) show(pos + (dx < 0 ? 1 : -1)); else if (dy > 90) shut();
+    x0 = null;
+  });
+</script>
+</body>
+</html>
